@@ -20,9 +20,11 @@ function startQuestionnaire()
 
 function askNextQuestion()
 {
-    if (questions.lenght > currentQuestionID)
+    
+    if (questions.length > currentQuestionID)
     {
-        showQuestion(questions[currentQuestionID]);
+        var question = questions[currentQuestionID];
+        showQuestion(question);
     }
     else
     {
@@ -32,26 +34,31 @@ function askNextQuestion()
 
 function showQuestion(question)
 {
-    document.getElementById("questionline").innerHTML = Question(question);
+    document.getElementById("questionline").innerHTML = question.question;
     document.getElementById("startBlock").style.display="none";
     document.getElementById("questionsBlock").style.display="block";
-    showAnswerOptions();
+    showAnswerOptions(question.answer);
 }
 
 function showAnswerOptions(answer)
 {
-    document.getElementById("answerBlock").innerHTML = Question(answer);
-
+    var newAnswer = Array.from(answer);
+    newAnswer.forEach(element => {
+        document.getElementById("answerBlock").innerHTML += "<br/>" + element + "<button onclick=answerButtonClicked("+ newAnswer.indexOf(element) +")>Valitse</button>";       
+    });
 }
 
 function showEndSummary()
 {
-    document.getElementById("endBlock").innerHTML = Question(questions, answerIndexes);
-    document.getElementById("startBlock").style.visibility="hidden";
-    document.getElementById("questionsBlock").style.visibility="hidden";
+    document.getElementById("endBlock").innerHTML = questions, answerIndexes;
+    document.getElementById("startBlock").style.display="none";
+    document.getElementById("questionsBlock").style.display="none";
+    document.getElementById("endSummary").style.display="block";       
 }
 
 function answerButtonClicked(index)
 {
-
+    currentQuestionID++;
+    askNextQuestion();
+    console.log("clicked" + index);
 }
